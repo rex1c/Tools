@@ -38,6 +38,7 @@ for domain in domains :
         time.sleep(0.70710678118)
     
     # Filter Links (Link Finder)  
+    os.system("cat linkfinder.txt | sort -u > linkfinder.txt")
     linkfinder_file = open("linkfinder.txt" , "r")
     linkfinder_domains = linkfinder_file.readlines()
     link_filtered = []
