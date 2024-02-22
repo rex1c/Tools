@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="text"] {
+            background-color: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 4px;
+        }
+
+        .button {
+            background-color: #00ff00;
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #008000;
+        }
+
+
+        .result-item {
+            padding: 10px; /* افزودن padding به هر کادر خروجی جداگانه */
+            border: 1px solid #00ff00;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="domain" placeholder="Enter domain">
+    <button class="button" onclick="generateLinks()">Generate Links</button>
+    <div class="results" id="results"></div>
+
+    <script>
+        function generateLinks() {
+            var domain = document.getElementById('domain').value.trim();
+
+            if (domain === "") {
+                alert("Please enter a domain before generating links.");
+                return;
+            }
+
+            var dorks = [
+                'site:' + domain + ' inurl:&',
+                'site:' + domain + ' ext:php | ext:aspx | ext:asp | ext:jsp | ext:html | ext:htm',
+                'site:' + domain + ' ext:log | ext:txt | ext:conf | ext:cnf | ext:ini | ext:env | ext:sh | ext:bak | ext:backup | ext:swp | ext:old | ext:~ | ext:git | ext:svn | ext:htpasswd | ext:htaccess | ext:xml',
+                'site:' + domain + ' inurl:url= | inurl:return= | inurl:next= | inurl:redir= inurl:http',
+                'site:' + domain + ' inurl:http | inurl:url= | inurl:path= | inurl:dest= | inurl:html= | inurl:data= | inurl:domain= | inurl:page= inurl:&',
+                'site:' + domain + ' inurl:config | inurl:env | inurl:setting | inurl:backup | inurl:admin | inurl:php',
+                'site:' + domain + ' inurl:email= | inurl:phone= | inurl:password= | inurl:secret= inurl:&',
+                'site:' + domain + ' inurl:apidocs | inurl:api-docs | inurl:swagger | inurl:api-explorer',
+                'site:' + domain + ' inurl:cmd | inurl:exec= | inurl:query= | inurl:code= | inurl:do= | inurl:run= | inurl:read= | inurl:ping= inurl:&',
+                'site:' + domain + ' inurl:(unsubscribe|register|feedback|signup|join|contact|profile|user|comment|api|developer|affiliate|upload|mobile|upgrade|password)',
+                'site:' + domain + ' intitle:"Welcome to Nginx"'
+            ];
+
+            var resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            dorks.forEach(function(dork) {
+                var link = 'https://www.google.com/search?q=' + encodeURIComponent(dork);
+
+                var resultItem = document.createElement('div');
+                resultItem.classList.add('result-item');
+
+                var linkElement = document.createElement('a');
+                linkElement.href = link;
+                linkElement.target = '_blank';
+                linkElement.textContent = dork;
+                
+                resultItem.appendChild(linkElement);
+                resultsDiv.appendChild(resultItem);
+            });
+        }
+    </script>
+</body>
+</html>
