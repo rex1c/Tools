@@ -6,8 +6,10 @@ from bs4 import BeautifulSoup
 # href extractor
 f = open("links.narrow", "r")
 links = f.readlines()
+f.close()
+
 for link in links:
-    url = links[:-1]
+    url = link[:-1]
     response = requests.get(url)
     pattern_href = r'href="([^"]+)"'
     matches_href = re.findall(pattern_href, response.text)
