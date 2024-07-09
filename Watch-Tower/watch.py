@@ -25,7 +25,6 @@ class DBM:
 
 
     def ProgramsTable(file , new_data):
-        alert = open("alert" , "w")
         conn = sqlite3.connect(file) 
         query = conn.cursor()
         fetch = query.execute('SELECT * FROM Programs WHERE name = ? AND handle = ?;', (new_data['name'],new_data['handle'])).fetchone()
@@ -51,7 +50,6 @@ class DBM:
 
 
     def ASsetsTable(file , new_data):
-        alert = open("alert" , "w")
         conn = sqlite3.connect(file) 
         query = conn.cursor()
         fetch = query.execute('SELECT * FROM Assets WHERE name = ? AND asset_identifier = ?;', (new_data['name'], new_data['asset_identifier'] )).fetchone()
@@ -76,7 +74,7 @@ class DBM:
                 conn.commit()
                 conn.close()
                 print("New Asset Added : " , new_data)
-                
+
             except:
                 pass
 
