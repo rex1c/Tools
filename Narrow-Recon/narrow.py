@@ -14,6 +14,10 @@ for domain in domains :
     os.system("cat gau.txt way.txt | sort -u >> {}.passive.narrow".foramt(s))
     os.system("rm -rf *.txt")
 # Grab All Links
-os.system("cat  *.passive.narrow | sort -u >> links.narrow")
+os.system("cat  *.passive.narrow | sort -u >> all_links.narrow")
+os.system("cat  all_links.narrow | httpx -silent -fc 400,401,402,403,404,405,406,500,501,502,503,504,505,506 >> links.narrow")
 # Extract Parameter (Magic Parameter)
-os.system("python3 magicparam.py | sort -u >> parameters.narrow")
+os.system("cat all_links.narrow | unfurl keys | sort -u >> url_params.txt")
+os.system("python3 magicparam.py | sort -u >> magicparams.txt")
+os.system("cat *.txt | sort -u >> params.narrow")
+os.system("rm -rf *.txt")
