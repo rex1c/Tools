@@ -11,7 +11,7 @@ for domain in domains :
     # Start Passive Crawling
     os.system("gauplus '{}' | grep -Eiv '\.(css|jpg|jpeg|png|svg|img|gif|exe|js|apk|mp4|flv|pdf|doc|ogv|webm|wmv|webp|mov|mp3|m4a|m4p|ppt|pptx|scss|tif|tiff|ttf|otf|woff|woff2|bmp|ico|eot|htc|swf|rtf|image|rf)' | sort -u >> gau.txt".format(s))
     os.system("waybackurls '{}' | grep -Eiv '\.(css|jpg|jpeg|png|svg|img|gif|exe|js|apk|mp4|flv|pdf|doc|ogv|webm|wmv|webp|mov|mp3|m4a|m4p|ppt|pptx|scss|tif|tiff|ttf|otf|woff|woff2|bmp|ico|eot|htc|swf|rtf|image|rf)' | sort -u >> way.txt".format(s))
-    os.system("cat gau.txt way.txt | sort -u >> {}.passive.narrow".foramt(s))
+    os.system("cat gau.txt way.txt | sort -u >> {}.passive.narrow".format(s))
     os.system("rm -rf *.txt")
 # Grab All Links
 os.system("cat  *.passive.narrow | sort -u >> all_links.narrow")
