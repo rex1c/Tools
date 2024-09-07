@@ -38,6 +38,7 @@ def subdomain_enumertaion():
 
 # Name Resulotion & CDN Filteration 
 def name_resultion():
+    os.system("cut-cdn -ua")
     files = []
 
     for file in os.listdir('.'):
