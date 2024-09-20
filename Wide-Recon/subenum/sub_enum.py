@@ -35,12 +35,12 @@ def subdomain_enumertaion():
         wordlist.close()
         # start DNS brute-force
         # static 
-        os.system(" shuffledns -w sub.merged.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.static.txt".format(i,i))
+        os.system(" shuffledns -list sub.merged.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.static.txt".format(i,i))
         # dynamic  
         os.system(" cat {}.sub.providers.txt | dnsgen -w words.merged - | tee {}.sub.dnsgen.txt".format(i,i))
         os.system(" altdns -i {}.sub.providers.txt -w words.merged -o {}.sub.altdns.txt".format(i,i))
         os.system(" cat {}.sub.altdns.txt {}.sub.dnsgen.txt | sort -u >> {}.sub.combined.txt".format(i,i,i))
-        os.system(" shuffledns -w {}.sub.combined.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.dynamic.txt".format(i,i,i))
+        os.system(" shuffledns -list {}.sub.combined.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.dynamic.txt".format(i,i,i))
         os.system(" cat {}.sub.providers.txt {}.sub.static.txt {}.sub.dynamic.txt | sort -u >> {}.subs".format(i,i,i,i))
         os.system(" rm *.txt ")
 
