@@ -77,3 +77,4 @@ def name_resultion():
 subdomain_enumertaion()
 name_resultion()
 name_resultion()
+name_resultion()
