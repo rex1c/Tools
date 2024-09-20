@@ -1,5 +1,8 @@
 import os
 
+
+
+
 def subdomain_enumertaion():
     file = open('domains' , "r")
     domain_lst = file.readlines()
@@ -24,14 +27,20 @@ def subdomain_enumertaion():
         # combine all 
         os.system(" cat {}.sub.subfinder {}.sub.crtsh {}.sub.abus| sort -u >> {}.sub.providers.txt".format(i,i,i,i))
         os.system("rm {}.sub.abus.name {}.sub.subfinder {}.sub.crtsh {}.sub.abus".format(i,i,i,i))
+        # making static wordlist
+        wordlist = open("sub.merged.txt" , "w")
+        with open('sub.merged', 'r') as f:
+            for line in f:
+                wordlist.writelines(f'{line.strip()}.{i}\n')
+        wordlist.close()
         # start DNS brute-force
         # static 
-        os.system(" shuffledns -w sub.merged -d {} -r resolver -mode resolve -t 30 -silent -o {}.sub.static.txt".format(i,i))
+        os.system(" shuffledns -w sub.merged.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.static.txt".format(i,i))
         # dynamic  
         os.system(" cat {}.sub.providers.txt | dnsgen -w words.merged - | tee {}.sub.dnsgen.txt".format(i,i))
         os.system(" altdns -i {}.sub.providers.txt -w words.merged -o {}.sub.altdns.txt".format(i,i))
         os.system(" cat {}.sub.altdns.txt {}.sub.dnsgen.txt | sort -u >> {}.sub.combined.txt".format(i,i,i))
-        os.system(" shuffledns -w {}.sub.combined.txt -d {} -r resolver -mode resolve -t 30 -silent -o {}.sub.dynamic.txt".format(i,i,i))
+        os.system(" shuffledns -w {}.sub.combined.txt -d {} -r ./resolver -mode resolve -t 30 -silent -o {}.sub.dynamic.txt".format(i,i,i))
         os.system(" cat {}.sub.providers.txt {}.sub.static.txt {}.sub.dynamic.txt | sort -u >> {}.subs".format(i,i,i,i))
         os.system(" rm *.txt ")
 
