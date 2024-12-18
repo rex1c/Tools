@@ -1,6 +1,5 @@
 import os , json , time , re , ssl , socket
 from prettytable import PrettyTable
-from groq import Groq
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 
