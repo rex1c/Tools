@@ -137,7 +137,8 @@ def port_scan():
 
 
 def certificate_search():
-    file = open("IPs.res" , "r")
+    os.system("cat IPs.res | grep 443 | sort -u >> IPcert")
+    file = open("IPcert" , "r")
     hosts = file.readlines()
 
     result = []
