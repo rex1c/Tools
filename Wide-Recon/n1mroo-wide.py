@@ -23,7 +23,7 @@ def subdomain_enumertaion():
         os.system(" subfinder -d {} -all -silent -o {}.sub.subfinder".format(i,i))
         
         # abusedb subs
-        abuse_db_cmd = """curl -s https://www.abuseipdb.com/whois/{} -H "user-agent: firefox" -b "abuseipdb_session=eyJpdiI6IlhhMDl5SEtCN3RhT29rXC9KU2JqeEtRPT0iLCJ2YWx1ZSI6IlwvdkJ0WHIza1FRQmFmK05lSkZnUGtDbTFpYVZ6MzFPOWh4WFB1NUVHb0hDc0dTM3ZINGJzM1Zaem5FcVA1dFNNIiwibWFjIjoiNTM3OWE4ODczNjg2ZWE4NTM0ZmYwNGQ4NDI2NDczNjBlNzE0ZjcxYjRkODI1ZmU1NzY5YjM2YWE2MDYxYzAzMCJ9" | grep -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' >> {}.sub.abus.name""".format(i,i)
+        abuse_db_cmd = r"""curl -s https://www.abuseipdb.com/whois/{} -H "user-agent: firefox" -b "abuseipdb_session=eyJpdiI6IlhhMDl5SEtCN3RhT29rXC9KU2JqeEtRPT0iLCJ2YWx1ZSI6IlwvdkJ0WHIza1FRQmFmK05lSkZnUGtDbTFpYVZ6MzFPOWh4WFB1NUVHb0hDc0dTM3ZINGJzM1Zaem5FcVA1dFNNIiwibWFjIjoiNTM3OWE4ODczNjg2ZWE4NTM0ZmYwNGQ4NDI2NDczNjBlNzE0ZjcxYjRkODI1ZmU1NzY5YjM2YWE2MDYxYzAzMCJ9" | grep -E '<li>\w.*</li>' | sed -E 's/<\/?li>//g' >> {}.sub.abus.name""".format(i,i)
         os.system(abuse_db_cmd)
         f = open("{}.sub.abus.name".format(i) , "r")
         sub_name = f.readlines()
@@ -34,7 +34,7 @@ def subdomain_enumertaion():
         os.system("chaos -key 51fa03f4-9216-4e9e-bbb3-78c6a4a66110 -d {} -silent >> {}.sub.chaos".format(i,i))
 
         # waysub
-        os.system("""curl --insecure --silent "http://web.archive.org/cdx/search/cdx?url=*.{}/*&ouput=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u >> {}.sub.waysub""".format(i,i))
+        os.system(r"""curl --insecure --silent "http://web.archive.org/cdx/search/cdx?url=*.{}/*&ouput=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u >> {}.sub.waysub""".format(i,i))
         # combine all 
         os.system(" cat {}.sub.subfinder {}.sub.crtsh {}.sub.abus {}.sub.chaos {}.sub.waysub | sort -u >> {}.sub.providers.txt".format(i,i,i,i,i,i))
         os.system("rm {}.sub.abus.name {}.sub.subfinder {}.sub.crtsh {}.sub.abus {}.sub.chaos {}.sub.waysub ".format(i,i,i,i,i,i))
@@ -89,9 +89,9 @@ def name_resultion():
 
 
 def ip_grabber():
-    os.system("cat *.cdn | sort -u | grep -oP '\[\K[0-9.]+(?=\])' | sort -u >> IPs.txt")
+    os.system(r"cat *.cdn | sort -u | grep -oP '\[\K[0-9.]+(?=\])' | sort -u >> IPs.txt")
     os.system("cat IPs.txt | asnmap -silent | sort -u >> CIDRs.txt")
-    os.system("cat CIDRs.txt | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | sort -u >> CIDR.txt")
+    os.system(r"cat CIDRs.txt | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | sort -u >> CIDR.txt")
 
 
 def asn_discovery():
