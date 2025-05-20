@@ -39,7 +39,7 @@ def get_asn_for_domain(domain, file_data, client):
 
 def main():
     # Groq API setup
-    client = Groq(api_key="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")
+    client = Groq(api_key="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")
 
     
     # ASN data as a string
