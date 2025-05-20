@@ -95,25 +95,22 @@ def ip_grabber():
 
 
 def asn_discovery():
+    global asn_list
     file = open("CIDR.txt" , "r")
     ips = file.readlines()
     file.close()
     for ip in ips : 
-        asn = os.popen('curl -s https://api.bgpview.io/ip/{} -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0" | jq -r ".data.prefixes[0].asn.asn"'.format(ip[:-1])).read()[:-1]
-        print(asn)
+        asn = os.popen('curl -s https://api.bgpview.io/ip/{}'.format(ip[:-1])+' -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0" | jq -r ".data.prefixes[0] | {asn: .asn.asn , name : .name , des: .asn.description}"').read()
+        asn_details = json.loads(asn)
         time.sleep(3)
         if asn ==  "null":
             asn_table.add_row([ip[:-1], "Null", "Null" , "Null"])
             continue
+        if asn in asn_list:
+            continue
         asn_list.append(asn)
-
-    asn_list = list(set(asn_list))
-    for asn in asn_list:
-        asn_detail = os.popen('curl -s https://api.bgpview.io/asn/{}'.format(asn)+'-H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0" | jq -r ".data | {asn: .asn , name: .name, des: .description_short, email: .email_contacts}"').read()
-        asn_details = json.loads(asn_detail)
-        asn_table.add_row([str(asn), str(asn_details['name']) , str(asn_details['des'])])
-        time.sleep(2)
-
+        asn_table.add_row([str(asn_details['asn']), str(asn_details['name']) , str(asn_details['des'])])
+        
 
     table = open("ASN.res" , "w")
     table.write(str(asn_table))
