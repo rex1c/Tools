@@ -8,16 +8,19 @@ def get_asn_for_domain(domain, file_data, client):
     """
     # Construct prompt to extract ASN numbers
     prompt = f"""
-    Given the following ASN data and the domain {domain}, 
-    identify the ASN numbers associated with this domain.
+    Given the following ASN data and the domains {domain}, 
+    identify the Prefix CIDR associated with these domains.
     
     ASN Data:
     {file_data}
     
-    Domain: {domain}
+    Domains: {domain}
     
-    Respond ONLY with a JSON array of ASN numbers. 
-    If no ASNs are found, return an empty array.
+    Respond ONLY with a JSON array of Prefix CIDR. 
+    If no CIDRs associated with the domains provided (the simillar name of the domains should be in the "Name" field of the table )are found, return an empty array.
+
+   Example:
+   ["192.168.1.0/24"]
     """
     
     try:
@@ -26,11 +29,12 @@ def get_asn_for_domain(domain, file_data, client):
                 {"role": "system", "content": "You are an expert at analyzing network and ASN data."},
                 {"role": "user", "content": prompt}
             ],
-            model="llama-3.3-70b-versatile"
+            model="deepseek-r1-distill-llama-70b"
         )
         
         # Extract and parse the response
         response = chat_completion.choices[0].message.content
+        response = response.split("</think>", 1)[1].strip()
         return json.loads(response)
     
     except Exception as e:
@@ -39,7 +43,7 @@ def get_asn_for_domain(domain, file_data, client):
 
 def main():
     # Groq API setup
-    client = Groq(api_key="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")
+    client = Groq(api_key="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")
 
     
     # ASN data as a string
@@ -48,7 +52,7 @@ def main():
     file.close()
     # Domain to lookup
     file = open("domains" , "r")
-    domain = file.readlines()[0][:-1]
+    domain = file.readlines()
     
     # Get ASN numbers
     asn_numbers = get_asn_for_domain(domain, file_data, client)
