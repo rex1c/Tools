@@ -120,7 +120,7 @@ def asn_discovery():
         asn_table.add_row([str(asn_details['asn']), str(asn_details['name']) , str(asn_details['des']) , str(asn_details['prefix'])])
         
 
-    table = open("ASN-test.res" , "w")
+    table = open("ASN.res" , "w")
     table.write(str(asn_table))
     table.close()
 
